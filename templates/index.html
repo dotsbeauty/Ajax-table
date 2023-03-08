@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script src='static/main.js'></script> -->
+  <title>AJAX</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="right">
+      <form action="/submit" method="POST" id="myform">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age">
+
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender">
+
+        <input type="submit" onclick="sendData()" id="btn" value="Submit" />
+
+      </form>
+
+    </div>
+
+    <div class="left">
+      <table id="myTable">
+        <thead>
+          <tr>
+            <th>NAME</th>
+            <th>AGE</th>
+            <th>GENDER</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    const form = document.getElementById("myform");
+    const formData = new FormData(form);
+    let n = formData[0];
+    let a = formData[1];
+    let g = formData[2];
+    let data = {
+      "name": n,
+      "age": a,
+      "gender": g
+    }
+
+    function sendData() {
+      $.ajax({
+        url: "{{ url_for('submit') }}",
+        type: "POST",
+        data: data,
+        contentType: 'application/json',
+        success: function () {
+          console.log("successfully uploaded")
+        }
+      })
+    };
+
+
+  </script>
+</body>
+
+</html>
