@@ -23,7 +23,7 @@
         <label for="gender">Gender:</label>
         <input type="text" id="gender" name="gender">
 
-        <input type="submit" onclick="sendData()" id="btn" value="Submit" />
+        <input type="submit" id="btn" onclick="sendData()" value="Submit" />
 
       </form>
 
@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-
+          <ul id="para"></ul>
         </tbody>
       </table>
     </div>
@@ -64,12 +64,28 @@
         data: data,
         contentType: 'application/json',
         success: function () {
-          console.log("successfully uploaded")
+          console.log("Successfully uploaded")
         }
       })
     };
 
-
+    function updateData() {
+      $.ajax({
+        url: '{{ url_for("submit")}}',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // let result = JSON.parse(data)
+          $('#para').empty(); // Clear the existing list
+          $.each(data, function (i, info) {
+            console.log(info.name)
+            $('#para').append('<li>' + info.name + '</li>');
+          });
+        }
+      });
+    }
+    setInterval(updateData, 6000);
+    updateData();
   </script>
 </body>
 

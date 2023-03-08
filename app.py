@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import json
 import os
 app = Flask(__name__)
@@ -11,6 +11,10 @@ def index():
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
+    if request.method == 'GET':
+        with open('data.json') as f:
+            data = json.load(f)
+        return jsonify(data)
     if request.method == 'POST':
         data = {
             'name': request.form.get('name'),
@@ -22,13 +26,15 @@ def submit():
             inside = json.loads(f.read())
         inside.append(data)
         with open("data.json", 'a+') as f:
+            # print("gg")
             if data['name']:
                 f.seek(0)
                 f.truncate()
                 json.dump(inside, f)
+
         return redirect(url_for('index'))
     else:
-        render_template('index.html')
+        return render_template('index.html')
 
 
 if __name__ == '__main__':
